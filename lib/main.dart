@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class TimeCalculatorScreen extends StatefulWidget {
   @override
   _TimeCalculatorScreenState createState() => _TimeCalculatorScreenState();
@@ -85,14 +86,14 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
 
         title: Text('Calculadora DPERN'),
         backgroundColor: Colors.green, // Cor verde para o AppBar
 
       ),
       body: SafeArea(
-        child: Column(
+        child: ListView(
           children: [
             Align(
               alignment: Alignment.topCenter,
@@ -111,11 +112,13 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
             Text(
               'Total:',
               style: TextStyle(fontSize: 24),
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
             Text(
               '$totalYears anos e $totalMonths meses',
               style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
             Row(
