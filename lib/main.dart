@@ -9,8 +9,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: TimeCalculatorScreen(), // Use a tela principal aqui
+      home: TimeCalculatorScreen(), // tela principral
     );
+
   }
 }
 

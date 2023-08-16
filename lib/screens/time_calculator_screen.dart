@@ -18,18 +18,6 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
 
   List<HistoryEntry> history = []; // Lista para armazenar o histórico
 
-  // void addTime() {
-  //   // Código de adicionar o tempo (mantido igual)
-  //   int addedYears = int.parse(yearsController.text) ?? 0;
-  //   int addedMonths = int.parse(monthsController.text) ?? 0;
-  //
-  //   // Atualizar a tela
-  //   setState(() {
-  //     totalYears += addedYears;
-  //     totalMonths += addedMonths;
-  //     history.add(HistoryEntry(addedYears, addedMonths));
-  //   });
-  // }
   void addTime() {
     int months = int.tryParse(monthsController.text) ?? 0;
     int years = int.tryParse(yearsController.text) ?? 0;
@@ -45,8 +33,8 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
       totalMonths += (totalDays ~/ 30);
       totalDays %= 30;
 
-      totalYears += (totalMonths ~/ 12); // Update total years
-      totalMonths %= 12; // Keep months within 0-11 range
+      totalYears += (totalMonths ~/ 12); // atualiza total years
+      totalMonths %= 12;
 
       history.add(HistoryEntry(years, months, days, 'Agravante'));
 
@@ -92,7 +80,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
         totalMonths--;
       }
 
-      // Handle negative months
+      // converter anos pra meses
       while (totalMonths < 0) {
         totalMonths += 12;
         totalYears--;
@@ -100,13 +88,6 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
 
       history.add(HistoryEntry(-years, -months, days, 'Atenuante'));
 
-      // Handle negative years
-      //totalYears = totalYears.clamp(0, double.infinity.toInt());
-      // if(totalYears < 0){
-      //   totalYears = 0;
-      // }else if(tot alYears > 500){
-      //   totalYears = double.infinity.toInt();
-      // }
       daysController.clear();
       monthsController.clear();
       yearsController.clear();
@@ -114,19 +95,19 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
   }
 
   void clearTime() {
-    // Código de zerar o tempo (mantido igual)
+    // Código de zerar o tempo
     totalMonths = 0;
     totalYears = 0;
     totalDays = 0;
     history.clear();
     // Atualizar a tela
     setState(() {
-      // Atualize o estado da tela aqui
+      // Atualiza o estado da tela aqui
     });
   }
 
   void _openPrivacyPolicy() async {
-    const url = 'https://github.com/Rigobertto'; // Substitua pelo URL correto
+    const url = 'https://github.com/Rigobertto';
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -138,7 +119,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Calculadora de Tempo'),
-        backgroundColor: Colors.green, // Cor verde para o AppBar
+        backgroundColor: Colors.green,
         actions: [
           PopupMenuButton<String>(
             onSelected: (value) {
@@ -166,8 +147,8 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                 padding: const EdgeInsets.only(top: 20.0),
                 child: CircleAvatar(
                   radius: 40,
-                  backgroundColor: Colors.transparent, // Cor verde para o CircleAvatar
-                  //child: Image.network('https://agendamento.defensoria.rn.def.br/assets/logo-1a33c22bc3d059e0baf9a70ef5cd0f4be1c1277b0c6cc7db7a7a731d89f0d7a9.png'),
+                  backgroundColor: Colors.transparent,
+                  child: Image.network('https://agendamento.defensoria.rn.def.br/assets/logo-1a33c22bc3d059e0baf9a70ef5cd0f4be1c1277b0c6cc7db7a7a731d89f0d7a9.png'),
                 ),
               ),
             ),
@@ -214,8 +195,8 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                   width: 100,
                   child: TextField(
                     controller: daysController,
-                    keyboardType: TextInputType.number, // Alterar para número
-                    decoration: InputDecoration(labelText: 'Dias'), // Adicionar esta linha
+                    keyboardType: TextInputType.number, //
+                    decoration: InputDecoration(labelText: 'Dias'), //
                   ),
                 ),
               ],
@@ -228,7 +209,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                   onPressed: addTime,
                   child: Text('Adicionar'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Cor verde para o botão
+                    primary: Colors.green, //
                   ),
                 ),
                 SizedBox(width: 16),
@@ -236,7 +217,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                   onPressed: subtractTime,
                   child: Text('Subtrair'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Cor verde para o botão
+                    primary: Colors.green, //
                   ),
                 ),
                 SizedBox(width: 16),
@@ -244,7 +225,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                   onPressed: clearTime,
                   child: Text('Zerar'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Cor verde para o botão
+                    primary: Colors.green, //
                   ),
                 ),
               ],
