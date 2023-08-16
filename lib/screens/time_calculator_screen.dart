@@ -11,8 +11,11 @@ class TimeCalculatorScreen extends StatefulWidget {
 class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
   int totalMonths = 0;
   int totalYears = 0;
+  int totalDays = 0;
   TextEditingController monthsController = TextEditingController();
   TextEditingController yearsController = TextEditingController();
+  TextEditingController daysController = TextEditingController();
+
   List<HistoryEntry> history = []; // Lista para armazenar o histórico
 
   // void addTime() {
@@ -30,13 +33,24 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
   void addTime() {
     int months = int.tryParse(monthsController.text) ?? 0;
     int years = int.tryParse(yearsController.text) ?? 0;
+    int days = int.tryParse(daysController.text) ?? 0;
+
 
     setState(() {
       totalMonths += months;
       totalYears += years;
+      totalDays += days;
+
+      // Converter dias em meses se necessário
+      totalMonths += (totalDays ~/ 30);
+      totalDays %= 30;
+
       totalYears += (totalMonths ~/ 12); // Update total years
       totalMonths %= 12; // Keep months within 0-11 range
-      history.add(HistoryEntry(years, months, 'Agravante'));
+
+      history.add(HistoryEntry(years, months, days, 'Agravante'));
+
+      daysController.clear();
       monthsController.clear();
       yearsController.clear();
     });
@@ -64,16 +78,27 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
   void subtractTime() {
     int months = int.tryParse(monthsController.text) ?? 0;
     int years = int.tryParse(yearsController.text) ?? 0;
+    int days = int.tryParse(daysController.text) ?? 0;
+
 
     setState(() {
       totalMonths -= months;
       totalYears -= years;
-      history.add(HistoryEntry(-years, -months, 'Atenuante'));
+      totalDays -= days;
+
+      // Converter dias em meses se necessário
+      while (totalDays < 0) {
+        totalDays += 30;
+        totalMonths--;
+      }
+
       // Handle negative months
       while (totalMonths < 0) {
         totalMonths += 12;
         totalYears--;
       }
+
+      history.add(HistoryEntry(-years, -months, days, 'Atenuante'));
 
       // Handle negative years
       //totalYears = totalYears.clamp(0, double.infinity.toInt());
@@ -82,7 +107,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
       // }else if(tot alYears > 500){
       //   totalYears = double.infinity.toInt();
       // }
-
+      daysController.clear();
       monthsController.clear();
       yearsController.clear();
     });
@@ -92,6 +117,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
     // Código de zerar o tempo (mantido igual)
     totalMonths = 0;
     totalYears = 0;
+    totalDays = 0;
     history.clear();
     // Atualizar a tela
     setState(() {
@@ -152,13 +178,13 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
 
             Text(
               'Total:',
-              style: TextStyle(fontSize: 24),
+              style: TextStyle(fontSize: 30),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
             Text(
-              '$totalYears anos e $totalMonths meses',
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              'Anos: $totalYears \n Meses: $totalMonths \n Dias: $totalDays',
+              style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16),
@@ -181,6 +207,15 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
                     controller: monthsController,
                     keyboardType: TextInputType.number,
                     decoration: InputDecoration(labelText: 'Meses'),
+                  ),
+                ),
+                SizedBox(width: 16),
+                SizedBox(
+                  width: 100,
+                  child: TextField(
+                    controller: daysController,
+                    keyboardType: TextInputType.number, // Alterar para número
+                    decoration: InputDecoration(labelText: 'Dias'), // Adicionar esta linha
                   ),
                 ),
               ],
@@ -256,7 +291,7 @@ class _TimeCalculatorScreenState extends State<TimeCalculatorScreen> {
             child: Column(
               children: [
                 for (var entry in history)
-                  Text('${entry.years} anos ${entry.months} meses (${entry.actionType})'),
+                  Text('${entry.years}  ano(s)  ${entry.months} mes(es)  e  ${entry.days}  dia(s)  -  ${entry.actionType}'),
               ],
 
             ),
